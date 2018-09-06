@@ -1,0 +1,2 @@
+Note: If using class, i have to create object then store class in common package
+ else if using class without create object, i store it in utils package

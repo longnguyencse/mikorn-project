@@ -1,0 +1,12 @@
+Controllers: - contains application logic and passing user input to service
+
+
+                        Controller
+                        /
+                       /
+                      /
+                      Services
+                      \
+                       \
+                        \
+                         Repositories

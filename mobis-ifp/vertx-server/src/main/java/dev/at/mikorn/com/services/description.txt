@@ -1,0 +1,7 @@
+Services: The middleware between controller and repository. GAther data from controller, performs validation
+and business logic, and calling repositories for data manipulation
+
+                    Service
+                    /
+                   /
+                 Repositories
