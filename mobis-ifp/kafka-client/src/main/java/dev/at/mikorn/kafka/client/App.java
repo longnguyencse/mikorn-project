@@ -47,8 +47,22 @@ public class App {
 
 	public static void runProducer(String result) {
 		Producer<Long, String> producer = ProducerCreator.createProducer();
+		final ProducerRecord<Long, String> record = new ProducerRecord<Long, String>
+				(IKafkaConstants.TOPIC_NAME, result);
+		try {
+			RecordMetadata metadata = producer.send(record).get();
+			System.out.println("Record sent with key: *** " + " to partition " + metadata.partition()
+					+ " with offset " + metadata.offset());
 
-		for (int index = 0; index < IKafkaConstants.MESSAGE_COUNT; index++) {
+		}catch (InterruptedException e ) {
+			System.out.println("Error in sending record");
+			System.out.println(e);
+		} catch (ExecutionException e) {
+			System.out.println("Error in sending record");
+			System.out.println(e);
+		}
+
+		/*for (int index = 0; index < IKafkaConstants.MESSAGE_COUNT; index++) {
 			final ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(IKafkaConstants.TOPIC_NAME,
 					"This is record " + index + result);
 			try {
@@ -62,6 +76,6 @@ public class App {
 				System.out.println("Error in sending record");
 				System.out.println(e);
 			}
-		}
+		}*/
 	}
 }
