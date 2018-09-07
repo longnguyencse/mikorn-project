@@ -13,7 +13,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.util.concurrent.ExecutionException;
 
-public class App {
+public class KafkaClient {
 	public static void main(String[] args) {
 		runProducer("kalog");
 //		runConsumer();

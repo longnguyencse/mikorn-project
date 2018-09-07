@@ -16,6 +16,11 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!--path-->
+    <configuration.path>${project.build.directory}/conf</configuration.path>
+    <data.sample.path>${project.build.directory}/data</data.sample.path>
+    <lib.path>${project.build.directory}/lib</lib.path>
+    <bin.path>${project.build.directory}/bin</bin.path>
   </properties>
 
   <build>
@@ -29,8 +34,130 @@
             <target>1.8</target>
           </configuration>
         </plugin>
+        <!-- I want to collect jar library and config file-->
+
+        <!--Jar plugin-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <!--<mainClass>dev.at.mikorn.com.KafkaClient</mainClass>-->
+                <classpathPrefix>lib/</classpathPrefix>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+        <!-- Copy data sample-->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-resources-data</id>
+              <!-- here the phase you need -->
+              <phase>validate</phase>
+              <goals>
+                <goal>copy-resources</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>${data.sample.path}</outputDirectory>
+                <resources>
+                  <resource>
+                    <directory>/data</directory>
+                    <filtering>false</filtering>
+                  </resource>
+                </resources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <!--lib folder-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-dependencies</id>
+              <phase>package</phase>
+              <goals>
+                <goal>copy-dependencies</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>${lib.path}</outputDirectory>
+                <includeScope>runtime</includeScope>
+                <overWriteReleases>false</overWriteReleases>
+                <overWriteSnapshots>false</overWriteSnapshots>
+                <overWriteIfNewer>true</overWriteIfNewer>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Config folder-->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-resources-conf</id>
+              <!-- here the phase you need -->
+              <phase>validate</phase>
+              <goals>
+                <goal>copy-resources</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>${configuration.path}</outputDirectory>
+                <resources>
+                  <resource>
+                    <directory>/conf</directory>
+                    <filtering>false</filtering>
+                  </resource>
+                </resources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Bin folder: contains bash shell-->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-resources</id>
+              <!-- here the phase you need -->
+              <phase>install</phase>
+              <goals>
+                <goal>copy-resources</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>/target/bin</outputDirectory>
+                <!--<outputDirectory>${bin.path}</outputDirectory>-->
+                <resources>
+                  <resource>
+                    <directory>/src/main/resources/bin</directory>
+                    <filtering>false</filtering>
+                  </resource>
+                </resources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
-    </pluginManagement> 
+    </pluginManagement>
+
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>conf/</exclude>
+          <exclude>bin/</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+
   </build>
 
   <dependencies>

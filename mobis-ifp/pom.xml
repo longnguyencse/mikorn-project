@@ -16,6 +16,7 @@
   <modules>
     <module>vertx-server</module>
     <module>kafka-client</module>
+    <module>storm-kafka-client</module>
   </modules>
 
   <build>

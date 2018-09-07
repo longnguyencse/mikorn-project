@@ -11,6 +11,8 @@ import java.util.Properties;
 
 public class ProducerCreator {
 
+	private static KafkaProducer kafkaProducer;
+
 	public static Producer<Long, String> createProducer() {
 		Properties props = new Properties();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, IKafkaConstants.KAFKA_BROKERS);
